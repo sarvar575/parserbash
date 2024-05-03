@@ -26,18 +26,17 @@ def multithread(db, max_page):
         page_content = requests.get(url).text
         soup = BeautifulSoup(page_content, 'lxml')
 
-        articles = soup.find_all('article')
+        #articles = soup.find_all('article')
 
-        for article in articles:
+        for article in soup.find_all('article'):
             quote_text = article.find('div', class_='quote__body').text.strip()
             quote_id = article.find('a', class_='quote__header_permalink').text.strip("#")
             quote_date = article.find('div', class_='quote__header_date').text.strip()
             date_format = "%d.%m.%Y в %H:%M"
             datetime_obj = datetime.strptime(quote_date, date_format)
-            if crud.get_qoute(db, quote_id) is not None:
-                continue
-            crud.add_qoutes(db, quote_id, quote_text, datetime_obj)
-            #print(quote_id)
+            if crud.get_qoute(db, quote_id) is None:
+                crud.add_qoutes(db, quote_id, quote_text, datetime_obj)
+                #print(quote_id)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {executor.submit(process_page, db, page_number): page_number for page_number in range(1, max_page + 1)}
