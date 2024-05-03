@@ -10,9 +10,8 @@ def get_html():
 
 def get_count_quotes(src):
     soup = BeautifulSoup(src, 'lxml')
-    text = soup.article
-    last_num = text['data-quote']
-    return last_num
+    text = soup.find('b').text.strip()
+    return text
 
 def get_count_pages(src):
     soup = BeautifulSoup(src, 'lxml')
