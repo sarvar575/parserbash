@@ -1,4 +1,4 @@
-from sqlalchemy import  select, desc
+from sqlalchemy import select, desc, func
 from sqlalchemy.orm import Session
 from db import Quotes
 
@@ -13,7 +13,7 @@ class Crud:
     @staticmethod
     def get_last_quote(db: Session):
         query = db.execute(
-            select(Quotes).order_by(desc(Quotes.id)).limit(1))
+            select(Quotes).order_by(desc(Quotes.date)).limit(1))
         return query.scalar()
 
     @staticmethod
@@ -32,6 +32,12 @@ class Crud:
     def get_qoute_by_id(db: Session, id):
         query = db.execute(
             select(Quotes).where(Quotes.id == id))
+        return query.scalar()
+
+    @staticmethod
+    def get_count(db: Session):
+        query = db.execute(
+            select(func.count()).select_from(Quotes))
         return query.scalar()
 
 crud = Crud()

@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from crud import crud
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
 def get_html():
     response = requests.get('https://xn--80abh7bk0c.xn--p1ai/')
     return response.text

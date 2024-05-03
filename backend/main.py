@@ -44,9 +44,14 @@ def add_qoutes(
         db: Session = Depends(get_db)
 ):
     url = parser.get_html()
-    xml = parser.get_count_pages(url)
-    quotes = parser.multithread(db, int(xml))
-    return quotes
+    if parser.get_count_quotes(url) == crud.get_count(db):
+        return
+    elif crud.get_count(db) == 0:
+        xml = parser.get_count_pages(url)
+        quotes = parser.multithread(db, int(xml))
+        return quotes
+    else:
+        return {"message": "Есть новые записи"}
 
 
 if __name__ == '__main__':
