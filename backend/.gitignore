@@ -1,3 +1,6 @@
 venv
 *.db
 *.http
+.idea/
+__pycache__/
+.zip
